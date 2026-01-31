@@ -9,3 +9,6 @@ class Solution:
                     digit_sum +=int(digit)
                 num = digit_sum
             return num
+sol=Solution()
+n=int(input("Enter the number: "))
+print(sol.addDigits(n))
