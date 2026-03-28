@@ -1,0 +1,11 @@
+class Solution:
+    def findNumbers(self, nums: List[int]) -> int:
+        def count_digits(n):
+            if n == 0: return 1
+            count = 0
+            while n > 0:
+                n //= 10
+                count += 1
+            return count
+        
+        return sum(1 for num in nums if count_digits(num) % 2 == 0)
