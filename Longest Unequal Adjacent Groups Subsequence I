@@ -1,0 +1,46 @@
+class Solution:
+    def getLongestSubsequence(self, words: List[str], groups: List[int]) -> List[str]:
+        n = len(words)
+        
+       
+        dp = [[0, 0] for _ in range(n)]
+        prev = [[-1, -1] for _ in range(n)]
+        
+        for i in range(n):
+            g = groups[i]
+           
+            dp[i][g] = 1
+            
+          
+            for j in range(i):
+                prev_g = 1 - g  # Opposite group
+                if dp[j][prev_g] > 0:  # Valid previous ending
+                    if dp[j][prev_g] + 1 > dp[i][g]:
+                        dp[i][g] = dp[j][prev_g] + 1
+                        prev[i][g] = j
+        
+       
+        max_len = 0
+        end_idx, end_group = -1, -1
+        
+        for i in range(n):
+            for g in range(2):
+                if dp[i][g] > max_len:
+                    max_len = dp[i][g]
+                    end_idx, end_group = i, g
+        
+     
+        result = []
+        curr = end_idx
+        
+        while curr != -1:
+            if dp[curr][end_group] > 0:
+                result.append(words[curr])
+                # Find previous
+                prev_idx = prev[curr][end_group]
+                end_group = 1 - end_group  # Switch group
+                curr = prev_idx
+            else:
+                break
+        
+        return result[::-1]  # Reverse to get correct order
