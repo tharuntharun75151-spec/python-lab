@@ -1,0 +1,20 @@
+class Solution:
+    def oddCells(self, m: int, n: int, indices: List[List[int]]) -> int:
+        row_count = [0] * m
+        col_count = [0] * n
+        
+        # Count increments for each row and column
+        for r, c in indices:
+            row_count[r] += 1
+            col_count[c] += 1
+        
+        # We only care about parity (odd/even)
+        row_odd = sum(1 for x in row_count if x % 2 == 1)
+        row_even = m - row_odd
+        col_odd = sum(1 for x in col_count if x % 2 == 1)
+        col_even = n - col_odd
+        
+        # Cell (i,j) is odd when:
+        # 1. row i is odd AND col j is even, OR
+        # 2. row i is even AND col j is odd
+        return row_odd * col_even + row_even * col_odd
