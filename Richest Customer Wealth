@@ -1,0 +1,52 @@
+class Solution:
+    def maximumWealth(self, accounts: List[List[int]]) -> int:
+        print("="*60)
+        print("💰 RICHEST CUSTOMER CALCULATOR")
+        print("="*60)
+        
+        m, n = len(accounts), len(accounts[0])
+        print(f"{m} customers, {n} banks each")
+        print_accounts(accounts)
+        
+        max_wealth = 0
+        richest_cust = -1
+        
+        print("\n💳 Calculating wealth per customer:")
+        for i in range(m):
+            customer_wealth = 0
+            
+            for j in range(n):
+                customer_wealth += accounts[i][j]
+            
+            print(f"Customer {i}: {accounts[i]} → ${customer_wealth:,}")
+            
+            if customer_wealth > max_wealth:
+                max_wealth = customer_wealth
+                richest_cust = i
+        
+        print(f"\n🏆 RICHEST: Customer {richest_cust} with ${max_wealth:,}")
+        return max_wealth
+
+def print_accounts(accounts: List[List[int]]) -> None:
+    m = len(accounts)
+    print("Customer | Banks")
+    print("---------|-------")
+    for i, account in enumerate(accounts):
+        print(f"  {i}     | {account}")
+
+def run_tests():
+    sol = Solution()
+    
+    print("\nTEST 1:")
+    acc1 = [[1,2,3],[3,2,1]]
+    print(sol.maximumWealth(acc1))
+    
+    print("\nTEST 2:")
+    acc2 = [[1,5],[7,3],[3,5]]
+    print(sol.maximumWealth(acc2))
+    
+    print("\nTEST 3:")
+    acc3 = [[2,8,7],[7,1,3],[1,9,5]]
+    print(sol.maximumWealth(acc3))
+
+run_tests()
