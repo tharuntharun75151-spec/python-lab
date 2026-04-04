@@ -1,0 +1,66 @@
+class Solution:
+    def luckyNumbers(self, matrix: List[List[int]]) -> List[int]:
+        print("="*60)
+        print("🍀 LUCKY NUMBERS FINDER")
+        print("Min in row AND Max in column")
+        print("="*60)
+        
+        m, n = len(matrix), len(matrix[0])
+        print(f"Matrix: {m}×{n}")
+        print_matrix(matrix)
+        
+        lucky_numbers = []
+        
+        print("\n🔍 STEP 1: Find row minimums:")
+        row_mins = []
+        for i in range(m):
+            row_min = min(matrix[i])
+            row_idx = matrix[i].index(row_min)
+            row_mins.append((row_min, i, row_idx))
+            print(f"Row {i}: min={row_min} at col {row_idx}")
+        
+        print("\n🎯 STEP 2: Check column maximums:")
+        for val, row_idx, col_idx in row_mins:
+            print(f"\nChecking {val} at ({row_idx},{col_idx}):")
+            
+            col_max = max(matrix[i][col_idx] for i in range(m))
+            print(f"  Col {col_idx} max = {col_max}")
+            
+            if val == col_max:
+                print(f"  🎉 LUCKY! {val} is col max!")
+                lucky_numbers.append(val)
+            else:
+                print(f"  ❌ Not lucky (need {col_max})")
+        
+        print(f"\n🍀 FINAL LUCKY NUMBERS: {lucky_numbers}")
+        return lucky_numbers
+
+def print_matrix(matrix: List[List[int]]) -> None:
+    m, n = len(matrix), len(matrix[0])
+    print("  ", end="")
+    for j in range(n):
+        print(f"{j:3d}", end=" ")
+    print()
+    
+    for i in range(m):
+        print(f"{i:2d}", end=" ")
+        for j in range(n):
+            print(f"{matrix[i][j]:3d}", end=" ")
+        print()
+
+def run_tests():
+    sol = Solution()
+    
+    print("\nTEST 1:")
+    mat1 = [[3,7,8],[9,11,13],[15,16,17]]
+    print(sol.luckyNumbers(mat1))
+    
+    print("\nTEST 2:")
+    mat2 = [[1,10,4,2],[9,3,8,7],[15,16,17,12]]
+    print(sol.luckyNumbers(mat2))
+    
+    print("\nTEST 3:")
+    mat3 = [[7,8],[1,2]]
+    print(sol.luckyNumbers(mat3))
+
+run_tests()
