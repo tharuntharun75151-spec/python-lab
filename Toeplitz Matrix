@@ -1,0 +1,27 @@
+class Solution:
+    def isToeplitzMatrix(self, matrix: List[List[int]]) -> bool:
+      
+        if not matrix or not matrix[0]:
+            return True
+        
+        m, n = len(matrix), len(matrix[0])
+        
+        # Method 1: Check each diagonal by comparing with top-left element
+        # For cell (i,j), it belongs to diagonal starting at (i-j, 0) or (0, j-i)
+        
+        for i in range(m):
+            for j in range(n):
+                # Find top-left cell of this diagonal
+                diag_start_i = i - j
+                diag_start_j = 0
+                
+                # Adjust for diagonals starting from left column
+                if diag_start_i < 0:
+                    diag_start_i = 0
+                    diag_start_j = j - i
+                
+                # All cells on this diagonal must equal matrix[diag_start_i][diag_start_j]
+                if matrix[i][j] != matrix[diag_start_i][diag_start_j]:
+                    return False
+        
+        return True
