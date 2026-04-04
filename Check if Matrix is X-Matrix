@@ -1,0 +1,62 @@
+class Solution:
+    def checkXMatrix(self, grid: List[List[int]]) -> bool:
+        print("="*60)
+        print("❌ X-MATRIX VALIDATOR")
+        print("Diagonals ≠0, Off-diagonals =0")
+        print("="*60)
+        
+        n = len(grid)
+        print(f"Matrix: {n}×{n}")
+        print_matrix(grid)
+        
+        print("\n🔍 VALIDATING X-MATRIX CONDITIONS:")
+        
+        for i in range(n):
+            for j in range(n):
+                is_diag1 = (i == j)                    # Primary ↘️
+                is_diag2 = (i + j == n - 1)           # Secondary ↗️
+                is_on_diag = is_diag1 or is_diag2
+                
+                val = grid[i][j]
+                print(f"[{i}][{j}]={val} ", end="")
+                
+                if is_on_diag:
+                    print("🟢 DIAG (must ≠0)", end="")
+                    if val == 0:
+                        print(" → ❌ ZERO ON DIAG!")
+                        return False
+                else:
+                    print("🔴 OFF-DIAG (must =0)", end="")
+                    if val != 0:
+                        print(" → ❌ NONZERO OFF-DIAG!")
+                        return False
+                print()
+        
+        print("\n✅ PERFECT X-MATRIX!")
+        return True
+
+def print_matrix(grid: List[List[int]]) -> None:
+    n = len(grid)
+    print("  ", end="")
+    for j in range(n):
+        print(f"{j:3d}", end=" ")
+    print()
+    
+    for i in range(n):
+        print(f"{i:2d}", end=" ")
+        for j in range(n):
+            print(f"{grid[i][j]:3d}", end=" ")
+        print()
+
+def run_tests():
+    sol = Solution()
+    
+    print("\nTEST 1: Valid X")
+    grid1 = [[2,0,0,1],[0,3,1,0],[0,5,2,0],[4,0,0,2]]
+    print(sol.checkXMatrix(grid1))
+    
+    print("\nTEST 2: Invalid")
+    grid2 = [[5,7,0],[0,3,1],[0,5,0]]
+    print(sol.checkXMatrix(grid2))
+
+run_tests()
