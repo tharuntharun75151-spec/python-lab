@@ -1,0 +1,62 @@
+class Solution:
+    def construct2DArray(self, original: List[int], m: int, n: int) -> List[List[int]]:
+        print("="*80)
+        print("🔄 1D → 2D ARRAY RESHAPER")
+        print(f"original: {original}")
+        print(f"Target shape: {m}×{n}")
+        print("="*80)
+        
+        # Step 1: Validation
+        total_original = len(original)
+        required_total = m * n
+        print(f"Original length: {total_original}")
+        print(f"Required: {m}×{n} = {required_total}")
+        
+        if total_original != required_total:
+            print(f"❌ LENGTH MISMATCH: {total_original} ≠ {required_total}")
+            print("Returning empty 2D array")
+            return []
+        
+        print("✅ Length validation passed!")
+        
+        # Step 2: Chunk into rows
+        print("\n📦 Building 2D array (row-major):")
+        result = []
+        idx = 0
+        
+        for i in range(m):
+            row = []
+            print(f"Row {i}:", end=" ")
+            
+            for j in range(n):
+                row.append(original[idx])
+                print(f"{original[idx]}", end=" ")
+                idx += 1
+            
+            result.append(row)
+            print(f"→ {row}")
+        
+        print("\n✅ 2D Array constructed successfully!")
+        print("Result:")
+        for i, row in enumerate(result):
+            print(f"  Row {i}: {row}")
+        
+        return result
+
+def run_tests():
+    sol = Solution()
+    
+    print("\nTEST 1: 2x2")
+    print(sol.construct2DArray([1,2,3,4], 2, 2))
+    
+    print("\nTEST 2: 1x3") 
+    print(sol.construct2DArray([1,2,3], 1, 3))
+    
+    print("\nTEST 3: Invalid 1x1")
+    print(sol.construct2DArray([1,2], 1, 1))
+    
+    print("\nTEST 4: Large edge case")
+    large = list(range(1, 25))
+    print(sol.construct2DArray(large, 5, 5))
+
+run_tests()
