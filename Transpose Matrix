@@ -1,0 +1,24 @@
+class Solution:
+    def transpose(self, matrix: List[List[int]]) -> List[List[int]]:
+        print("="*50)
+        print("MATRIX TRANSPOSE")
+        print("="*50)
+        
+        m, n = len(matrix), len(matrix[0])
+        print(f"Input:  {m}×{n}")
+        print("Output: {n}×{m}")
+        
+        result = [[0] * m for _ in range(n)]
+        
+        print("\nMapping matrix[i][j] → result[j][i]:")
+        for i in range(m):
+            for j in range(n):
+                val = matrix[i][j]
+                result[j][i] = val
+                print(f"  ({i},{j})={val} → ({j},{i})={val}")
+        
+        print("\nResult matrix:")
+        for i, row in enumerate(result):
+            print(f"  Row {i}: {row}")
+        
+        return result
