@@ -1,0 +1,91 @@
+class Solution:
+    def diagonalPrime(self, nums: List[List[int]]) -> int:
+        print("="*70)
+        print("🔢 LARGEST PRIME ON DIAGONALS")
+        print("Primary (i==j) + Secondary (i+j==n-1)")
+        print("="*70)
+        
+        n = len(nums)
+        print(f"Square matrix: {n}×{n}")
+        print_matrix(nums)
+        
+        diagonal_set = set()
+        
+        print("\n🔍 EXTRACTING DIAGONAL ELEMENTS:")
+        
+        # Primary diagonal: i == j
+        print("Primary diagonal (↘️):")
+        for i in range(n):
+            val = nums[i][i]
+            diagonal_set.add(val)
+            print(f"  [{i}][{i}] = {val}")
+        
+        # Secondary diagonal: i + j == n-1
+        print("Secondary diagonal (↗️):")
+        for i in range(n):
+            j = n - 1 - i
+            val = nums[i][j]
+            diagonal_set.add(val)
+            print(f"  [{i}][{j}] = {val}")
+        
+        print(f"\n📋 Unique diagonal numbers: {sorted(diagonal_set)}")
+        
+        largest_prime = 0
+        
+        print("\n🧮 TESTING PRIMES (largest first):")
+        for num in sorted(diagonal_set, reverse=True):
+            if num > 1 and is_prime(num):
+                largest_prime = num
+                print(f"  🎉 {num} is PRIME! ← LARGEST")
+                break
+            else:
+                print(f"  ❌ {num} {'(≤1)' if num <= 1 else 'not prime'}")
+        
+        print(f"\n🏆 LARGEST PRIME: {largest_prime}")
+        return largest_prime
+
+def is_prime(num: int) -> bool:
+    """Check if num is prime (optimized trial division)"""
+    if num <= 1:
+        return False
+    if num <= 3:
+        return True
+    if num % 2 == 0 or num % 3 == 0:
+        return False
+    
+    i = 5
+    while i * i <= num:
+        if num % i == 0 or num % (i + 2) == 0:
+            return False
+        i += 6
+    return True
+
+def print_matrix(nums: List[List[int]]) -> None:
+    n = len(nums)
+    print("Col", end=" ")
+    for j in range(n):
+        print(f"{j:3d}", end=" ")
+    print()
+    
+    for i in range(n):
+        print(f"{i:2d} ", end="")
+        for j in range(n):
+            print(f"{nums[i][j]:3d}", end=" ")
+        print()
+
+def run_tests():
+    sol = Solution()
+    
+    print("\nTEST 1:")
+    nums1 = [[1,2,3],[5,6,7],[9,10,11]]
+    print(sol.diagonalPrime(nums1))
+    
+    print("\nTEST 2:")
+    nums2 = [[1,2,3],[5,17,7],[9,11,10]]
+    print(sol.diagonalPrime(nums2))
+    
+    print("\nTEST 3: No primes")
+    nums3 = [[2,4,6],[8,10,12],[14,16,18]]
+    print(sol.diagonalPrime(nums3))
+
+run_tests()
