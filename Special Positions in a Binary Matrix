@@ -1,0 +1,90 @@
+class Solution:
+    def numSpecial(self, mat: List[List[int]]) -> int:
+        print("="*60)
+        print("🎯 SPECIAL POSITIONS COUNTER")
+        print("1 with all 0s in row AND column")
+        print("="*60)
+        
+        m, n = len(mat), len(mat[0])
+        special_count = 0
+        print(f"Matrix: {m}×{n}")
+        print_matrix(mat)
+        
+        print("\n🔍 Checking each 1 position:")
+        for i in range(m):
+            for j in range(n):
+                if mat[i][j] == 1:
+                    print(f"\n📍 Candidate ({i},{j})=1")
+                    
+                    row_all_zero = True
+                    col_all_zero = True
+                    
+                    # Check row i (exclude [i][j])
+                    for c in range(n):
+                        if c != j and mat[i][c] == 1:
+                            row_all_zero = False
+                            break
+                    
+                    # Check column j (exclude [i][j])
+                    for r in range(m):
+                        if r != i and mat[r][j] == 1:
+                            col_all_zero = False
+                            break
+                    
+                    print(f"  Row {i} clear: {row_all_zero}")
+                    print(f"  Col {j} clear: {col_all_zero}")
+                    
+                    if row_all_zero and col_all_zero:
+                        special_count += 1
+                        print(f"  🎉 SPECIAL POSITION #{special_count}!")
+                    else:
+                        print("  ❌ Not special")
+        
+        print(f"\n🎊 TOTAL SPECIAL POSITIONS: {special_count}")
+        return special_count
+
+def print_matrix(mat: List[List[int]]) -> None:
+    m, n = len(mat), len(mat[0])
+    print("  ", end="")
+    for j in range(n):
+        print(f"{j:2d}", end=" ")
+    print()
+    
+    for i in range(m):
+        print(f"{i:2d}", end=" ")
+        for j in range(n):
+            print(f"{mat[i][j]:2d}", end=" ")
+        print()
+
+def optimized_solution(mat: List[List[int]]) -> int:
+    print("\n⚡ OPTIMIZED VERSION:")
+    m, n = len(mat), len(mat[0])
+    
+    row_ones = [sum(row) for row in mat]
+    col_ones = [sum(mat[i][j] for i in range(m)) for j in range(n)]
+    
+    count = 0
+    for i in range(m):
+        for j in range(n):
+            if mat[i][j] == 1 and row_ones[i] == 1 and col_ones[j] == 1:
+                count += 1
+    
+    print(f"Row ones: {row_ones}")
+    print(f"Col ones: {col_ones}")
+    print(f"Special: {count}")
+    return count
+
+def run_tests():
+    sol = Solution()
+    
+    print("\nTEST 1:")
+    mat1 = [[1,0,0],[0,0,1],[1,0,0]]
+    print(sol.numSpecial(mat1))
+    print("Optimized:", optimized_solution(mat1))
+    
+    print("\nTEST 2:")
+    mat2 = [[1,0,0],[0,1,0],[0,0,1]]
+    print(sol.numSpecial(mat2))
+    print("Optimized:", optimized_solution(mat2))
+
+run_tests()
