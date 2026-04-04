@@ -1,0 +1,56 @@
+class Solution:
+    def kWeakestRows(self, mat: List[List[int]], k: int) -> List[int]:
+        print("="*60)
+        print("🏰 K WEAKEST ROWS (Soldiers)")
+        print("="*60)
+        
+        m, n = len(mat), len(mat[0])
+        print(f"Matrix: {m}×{n}, k={k}")
+        
+        row_strengths = []
+        
+        print("\n📊 Calculating soldier count per row:")
+        for i in range(m):
+            soldiers = 0
+            
+            for j in range(n):
+                if mat[i][j] == 1:
+                    soldiers += 1
+                else:
+                    break
+            
+            row_strengths.append((soldiers, i))
+            print(f"Row {i}: {soldiers} soldiers")
+        
+        print("\n🔄 Sorting rows (strength, index):")
+        row_strengths.sort()
+        for strength, idx in row_strengths:
+            print(f"  ({strength}, {idx})")
+        
+        weakest = [idx for strength, idx in row_strengths[:k]]
+        print(f"\n🎯 K={k} weakest rows: {weakest}")
+        return weakest
+
+def run_tests():
+    sol = Solution()
+    
+    mat1 = [
+        [1,1,0,0,0],
+        [1,1,1,1,0], 
+        [1,0,0,0,0],
+        [1,1,0,0,0],
+        [1,1,1,1,1]
+    ]
+    print("TEST 1:")
+    print(sol.kWeakestRows(mat1, 3))
+    
+    mat2 = [
+        [1,0,0,0],
+        [1,1,1,1],
+        [1,0,0,0],
+        [1,0,0,0]
+    ]
+    print("\nTEST 2:")
+    print(sol.kWeakestRows(mat2, 2))
+
+run_tests()
