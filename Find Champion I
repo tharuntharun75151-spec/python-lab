@@ -1,0 +1,68 @@
+class Solution:
+    def findChampion(self, grid: List[List[int]]) -> int:
+        print("="*80)
+        print("🏆 TOURNAMENT CHAMPION FINDER")
+        print("Team with ZERO losses (no one beats them)")
+        print("="*80)
+        
+        n = len(grid)
+        print(f"n={n} teams")
+        print("Win matrix (grid[i][j]=1 means i beats j):")
+        print_matrix(grid)
+        
+        champions = []
+        
+        print("\n🔍 Loss analysis per team:")
+        print("-" * 50)
+        
+        for team in range(n):
+            losses = 0
+            beaters = []
+            
+            print(f"\nTeam {team} losses:")
+            for opponent in range(n):
+                if grid[opponent][team] == 1:
+                    losses += 1
+                    beaters.append(opponent)
+                    print(f"  ❌ Team {opponent} beats team {team}")
+            
+            print(f"Team {team}: {losses} losses from {beaters}")
+            
+            if losses == 0:
+                print(f"  🎉 TEAM {team} IS UNDEFEATED!")
+                champions.append(team)
+        
+        print("\n" + "="*80)
+        if len(champions) == 1:
+            winner = champions[0]
+            print(f"🏆 CHAMPION: TEAM {winner}")
+            return winner
+        else:
+            print(f"ERROR: {len(champions)} champions found!")
+            return -1
+
+def print_matrix(grid: List[List[int]]) -> None:
+    n = len(grid)
+    print("   ", end="")
+    for j in range(n):
+        print(f"{j:3d}", end=" ")
+    print()
+    
+    for i in range(n):
+        print(f"{i:2d} ", end="")
+        for j in range(n):
+            print(f"{grid[i][j]:2d}", end=" ")
+        print()
+
+def run_tests():
+    sol = Solution()
+    
+    print("\nTEST 1:")
+    grid1 = [[0,1],[0,0]]
+    print(sol.findChampion(grid1))
+    
+    print("\nTEST 2:")
+    grid2 = [[0,0,1],[1,0,1],[0,0,0]]
+    print(sol.findChampion(grid2))
+
+run_tests()
