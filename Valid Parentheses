@@ -1,0 +1,20 @@
+class Solution:
+    def isValid(self, s: str) -> bool:
+        stack = []
+        pairs = {')':'(', '}':'{', ']':'['}
+        
+        print(f"Input: '{s}'")
+        
+        for char in s:
+            if char in pairs:
+                if not stack or stack[-1] != pairs[char]:
+                    print(f"Mismatch: expected {pairs[char]}, got {char}")
+                    return False
+                stack.pop()
+                print(f"Matched {pairs[char]}{char}")
+            else:
+                stack.append(char)
+                print(f"Pushed {char}")
+        
+        print(f"Final stack: {stack}")
+        return len(stack) == 0
