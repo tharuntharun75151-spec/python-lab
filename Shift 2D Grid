@@ -1,0 +1,134 @@
+class Solution:
+    def shiftGrid(self, grid: List[List[int]], k: int) -> List[List[int]]:
+       
+        print("="*80)
+        print("🔄 GRID SHIFT ROTATOR")
+        print("="*80)
+        
+        # Input validation & dimensions
+        if not grid or not grid[0]:
+            print("ERROR: Empty grid!")
+            return grid
+            
+        m, n = len(grid), len(grid[0])
+        total_cells = m * n
+        print(f"Grid: {m}×{n} = {total_cells} cells")
+        print(f"Shift count: k={k}")
+        
+        # Optimization: k can be large, use modulo
+        k = k % total_cells
+        if k == 0:
+            print("✅ k ≡ 0 mod total_cells → No change needed!")
+            print_grid(grid, "Final result (unchanged)")
+            return grid
+        
+        print(f"Optimized k: {k} (k % {total_cells})")
+        print_grid(grid, "Initial grid")
+        
+        # Method 1: Simulate k full rotations
+        print(f"\n🎬 SIMULATING {k} ROTATIONS...")
+        
+        for rotation in range(1, k + 1):
+            print(f"\n--- Rotation {rotation}/{k} ---")
+            new_grid = [[0] * n for _ in range(m)]
+            
+            for i in range(m):
+                for j in range(n):
+                    if j + 1 < n:
+                        # Right shift within row
+                        new_grid[i][j + 1] = grid[i][j]
+                    else:
+                        # Wrap to next row, column 0
+                        next_row = (i + 1) % m
+                        new_grid[next_row][0] = grid[i][j]
+            
+            grid = new_grid
+            if rotation in [1, k]:  # Show first and last
+                print_grid(grid, f"After rotation {rotation}")
+        
+        print("\n✅ SIMULATION COMPLETE!")
+        return grid
+
+def print_grid(grid: List[List[int]], title: str = "") -> None:
+ 
+    m, n = len(grid), len(grid[0])
+    if title:
+        print(f"\n{title}:")
+    
+    print("   ", end="")
+    for j in range(n):
+        print(f" {j:2d}", end="")
+    print()
+    
+    for i in range(m):
+        print(f"{i:2d} |", end="")
+        for j in range(n):
+            print(f"{grid[i][j]:3d}", end="")
+        print()
+
+# =================================================================
+# OPTIMIZED MATHEMATICAL SOLUTION (Bonus)
+# =================================================================
+class SolutionMath:
+    def shiftGrid(self, grid: List[List[int]], k: int) -> List[List[int]]:
+       
+        print("\n" + "="*80)
+        print("🧮 MATHEMATICAL SOLUTION (Single Pass)")
+        print("="*80)
+        
+        m, n = len(grid), len(grid[0])
+        total = m * n
+        k = k % total
+        
+        # Create flat list of all elements in row-major order
+        flat = []
+        for row in grid:
+            flat.extend(row)
+        
+        print(f"Flattened: {flat}")
+        
+        # Rotate flat list by k positions
+        rotated = flat[-k:] + flat[:-k]
+        print(f"Rotated by {k}: {rotated}")
+        
+        # Reshape back to m×n grid
+        result = []
+        idx = 0
+        for i in range(m):
+            row = []
+            for j in range(n):
+                row.append(rotated[idx])
+                idx += 1
+            result.append(row)
+        
+        print_grid(result, "Final result")
+        return result
+
+# =================================================================
+# COMPREHENSIVE TEST SUITE
+# =================================================================
+def run_all_tests():
+    sol = Solution()
+    sol_math = SolutionMath()
+    
+    # Example 1
+    print("TEST 1: 3x3, k=1")
+    grid1 = [[1,2,3],[4,5,6],[7,8,9]]
+    result1 = sol.shiftGrid(grid1, 1)
+    print(f"Expected: [[9,1,2],[3,4,5],[6,7,8]]")
+    
+    # Example 2  
+    print("\nTEST 2: 4x4, k=4")
+    grid2 = [[3,8,1,9],[19,7,2,5],[4,6,11,10],[12,0,21,13]]
+    result2 = sol.shiftGrid(grid2, 4)
+    
+    # Example 3
+    print("\nTEST 3: 3x3, k=9 (full cycle)")
+    grid3 = [[1,2,3],[4,5,6],[7,8,9]]
+    result3 = sol.shiftGrid(grid3, 9)
+    
+    print("\n🧮 MATHEMATICAL METHOD TEST:")
+    sol_math.shiftGrid([[1,2,3],[4,5,6],[7,8,9]], 2)
+
+# Uncomment to run
+# run_all_tests()
