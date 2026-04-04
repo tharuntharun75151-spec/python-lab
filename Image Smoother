@@ -1,0 +1,34 @@
+class Solution:
+    def imageSmoother(self, img: List[List[int]]) -> List[List[int]]:
+       
+        if not img or not img[0]:
+            return img
+        
+        m, n = len(img), len(img[0])
+        result = [[0] * n for _ in range(m)]
+        
+        # Define all 9 possible directions (including center)
+        directions = [
+            (-1, -1), (-1, 0), (-1, 1),  # Top row
+            ( 0, -1), ( 0, 0), ( 0, 1),  # Middle row  
+            ( 1, -1), ( 1, 0), ( 1, 1)   # Bottom row
+        ]
+        
+        for i in range(m):
+            for j in range(n):
+                total_sum = 0
+                count = 0
+                
+                # Check all 9 neighboring cells (including current cell)
+                for di, dj in directions:
+                    ni, nj = i + di, j + dj
+                    
+                    # Valid neighbor check
+                    if 0 <= ni < m and 0 <= nj < n:
+                        total_sum += img[ni][nj]
+                        count += 1
+                
+                # Apply smoothing: floor(sum / count)
+                result[i][j] = total_sum // count
+        
+        return result
