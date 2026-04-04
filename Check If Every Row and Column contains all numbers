@@ -1,0 +1,82 @@
+class Solution:
+    def checkValid(self, matrix: List[List[int]]) -> bool:
+        print("="*60)
+        print("✅ MATRIX VALIDATOR (Latin Square)")
+        print("Each row & col must contain 1..n exactly once")
+        print("="*60)
+        
+        n = len(matrix)
+        print(f"Matrix size: {n}×{n}")
+        print_matrix(matrix)
+        
+        # Check rows
+        print("\n🔍 VALIDATING ROWS:")
+        for i in range(n):
+            row_set = set(matrix[i])
+            print(f"Row {i}: {matrix[i]} → {sorted(row_set)}")
+            if len(row_set) != n or any(x < 1 or x > n for x in row_set):
+                print(f"❌ Row {i} INVALID!")
+                return False
+        
+        # Check columns  
+        print("\n🔍 VALIDATING COLUMNS:")
+        for j in range(n):
+            col = [matrix[i][j] for i in range(n)]
+            col_set = set(col)
+            print(f"Col {j}: {col} → {sorted(col_set)}")
+            if len(col_set) != n or any(x < 1 or x > n for x in col_set):
+                print(f"❌ Col {j} INVALID!")
+                return False
+        
+        print("\n✅ ALL ROWS & COLUMNS VALID!")
+        return True
+
+def print_matrix(matrix: List[List[int]]) -> None:
+    n = len(matrix)
+    print("  ", end="")
+    for j in range(n):
+        print(f"{j:2d}", end=" ")
+    print()
+    
+    for i in range(n):
+        print(f"{i:2d}", end=" ")
+        for j in range(n):
+            print(f"{matrix[i][j]:2d}", end=" ")
+        print()
+
+def optimized_solution(matrix: List[List[int]]) -> bool:
+    print("\n⚡ OPTIMIZED 1-PASS:")
+    n = len(matrix)
+    
+    row_seen = [set() for _ in range(n)]
+    col_seen = [set() for _ in range(n)]
+    
+    for i in range(n):
+        for j in range(n):
+            num = matrix[i][j]
+            if num < 1 or num > n:
+                return False
+            
+            if num in row_seen[i] or num in col_seen[j]:
+                return False
+            
+            row_seen[i].add(num)
+            col_seen[j].add(num)
+    
+    return True
+
+def run_tests():
+    sol = Solution()
+    
+    print("\nTEST 1: Valid")
+    mat1 = [[1,2,3],[3,1,2],[2,3,1]]
+    print(sol.checkValid(mat1))
+    
+    print("\nTEST 2: Invalid row") 
+    mat2 = [[1,1,1],[1,2,3],[1,2,3]]
+    print(sol.checkValid(mat2))
+    
+    print("\nTEST 3: Valid optimized")
+    print(optimized_solution(mat1))
+
+run_tests()
