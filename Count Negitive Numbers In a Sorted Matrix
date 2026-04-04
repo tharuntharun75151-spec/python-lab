@@ -1,0 +1,53 @@
+class Solution:
+    def countNegatives(self, grid: List[List[int]]) -> int:
+        print("="*60)
+        print("📉 NEGATIVE COUNT (Sorted Matrix)")
+        print("="*60)
+        
+        m, n = len(grid), len(grid[0])
+        total_negatives = 0
+        print(f"Grid: {m}×{n}")
+        
+        print("\n🔍 Scanning each row:")
+        for i in range(m):
+            left, right = 0, n - 1
+            row_neg = 0
+            
+            print(f"Row {i}: {grid[i]}")
+            
+            while left <= right:
+                mid = (left + right) // 2
+                if grid[i][mid] < 0:
+                    row_neg = n - mid
+                    right = mid - 1
+                else:
+                    left = mid + 1
+            
+            total_negatives += row_neg
+            print(f"  → {row_neg} negatives (starting col {n-row_neg})")
+        
+        print(f"\n🎯 TOTAL NEGATIVES: {total_negatives}")
+        return total_negatives
+
+def naive_count(grid):
+    return sum(1 for row in grid for x in row if x < 0)
+
+def run_tests():
+    sol = Solution()
+    
+    grid1 = [
+        [4,3,2,-1],
+        [3,2,1,-1],
+        [1,1,-1,-2],
+        [-1,-1,-2,-3]
+    ]
+    print("TEST 1:")
+    print(f"Binary search: {sol.countNegatives(grid1)}")
+    print(f"Naive:         {naive_count(grid1)}")
+    
+    grid2 = [[3,2],[1,0]]
+    print("\nTEST 2:")
+    print(f"Binary search: {sol.countNegatives(grid2)}")
+    print(f"Naive:         {naive_count(grid2)}")
+
+run_tests()
