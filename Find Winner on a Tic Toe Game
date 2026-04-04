@@ -1,0 +1,127 @@
+class Solution:
+    def tictactoe(self, moves: List[List[int]]) -> str:
+      
+        print("="*80)
+        print("🎮 TIC-TAC-TOE GAME SIMULATOR")
+        print("="*80)
+        
+        # Initialize 3x3 empty grid
+        grid = [[' ' for _ in range(3)] for _ in range(3)]
+        print_grid(grid, "Initial empty board")
+        
+        # Player mapping: A='X' (odd moves), B='O' (even moves)
+        total_moves = len(moves)
+        print(f"Total moves planned: {total_moves}")
+        
+        # Simulate each move
+        print("\n🎯 SIMULATING MOVES:")
+        print("-" * 60)
+        
+        for move_idx, (row, col) in enumerate(moves, 1):
+            # Determine player: A (X) on odd moves, B (O) on even moves
+            player = 'X' if move_idx % 2 == 1 else 'O'
+            print(f"\nMove {move_idx}: Player {player} at ({row},{col})")
+            
+            # Place mark (assumed valid by constraints)
+            grid[row][col] = player
+            print_grid(grid, f"After move {move_idx}")
+            
+            # Check win after each move
+            if check_winner(grid, player):
+                winner = "A" if player == 'X' else "B"
+                print(f"🎉 {player} WINS after move {move_idx}!")
+                print(f"WINNER: {winner}")
+                return winner
+        
+        # Game over? Check if board full
+        board_full = all(grid[i][j] != ' ' for i in range(3) for j in range(3))
+        
+        if board_full:
+            print("🏁 Board full → DRAW!")
+            return "Draw"
+        else:
+            remaining = 9 - total_moves
+            print(f"⏳ Game pending! {remaining} moves remaining")
+            return "Pending"
+
+def check_winner(grid: List[List[str]], player: str) -> bool:
+   
+    print(f"  Checking win for {player}...")
+    
+    # Check 3 rows
+    for i in range(3):
+        if grid[i][0] == grid[i][1] == grid[i][2] == player:
+            print(f"  → Row {i} WIN: {grid[i]}")
+            return True
+    
+    # Check 3 columns  
+    for j in range(3):
+        if grid[0][j] == grid[1][j] == grid[2][j] == player:
+            print(f"  → Col {j} WIN!")
+            return True
+    
+    # Check 2 diagonals
+    if grid[0][0] == grid[1][1] == grid[2][2] == player:
+        print("  → Main diagonal WIN!")
+        return True
+    if grid[0][2] == grid[1][1] == grid[2][0] == player:
+        print("  → Anti diagonal WIN!")
+        return True
+    
+    print("  No win found")
+    return False
+
+def print_grid(grid: List[List[str]], title: str = "") -> None:
+    """Pretty print 3x3 Tic-Tac-Toe board"""
+    if title:
+        print(f"\n{title}:")
+    print("  0   1   2")
+    print(" ┌───┬───┬───┐")
+    for i in range(3):
+        row_str = f"{i}| "
+        for j in range(3):
+            row_str += f"{grid[i][j]} | "
+        print(row_str)
+        if i < 2:
+            print(" ├───┼───┼───┤")
+    print(" └───┴───┴───┘")
+
+# =================================================================
+# COMPREHENSIVE TEST SUITE
+# =================================================================
+def run_all_tests():
+    sol = Solution()
+    
+    print("\nTEST 1: A Wins")
+    moves1 = [[0,0],[2,0],[1,1],[2,1],[2,2]]
+    print(f"Result: {sol.tictactoe(moves1)}")  # "A"
+    
+    print("\nTEST 2: B Wins") 
+    moves2 = [[0,0],[1,1],[0,1],[0,2],[1,0],[2,0]]
+    print(f"Result: {sol.tictactoe(moves2)}")  # "B"
+    
+    print("\nTEST 3: Draw")
+    moves3 = [[0,0],[1,1],[2,0],[1,0],[1,2],[2,1],[0,1],[0,2],[2,2]]
+    print(f"Result: {sol.tictactoe(moves3)}")  # "Draw"
+    
+    print("\nTEST 4: Pending")
+    moves4 = [[0,0],[1,1]]
+    print(f"Result: {sol.tictactoe(moves4)}")  # "Pending"
+
+# =================================================================
+# WIN CONDITION VISUALIZATION
+# =================================================================
+def show_win_conditions():
+    print("\n📋 ALL 8 WIN CONDITIONS:")
+    wins = [
+        "Rows: [X,X,X] --- ---", " --- [X,X,X] ---", " --- --- [X,X,X]",
+        "Cols: X | X | X", " --- X --- X --- X", 
+        "Diags:X --- --- --- --- X --- --- --- X",
+        "     --- --- X --- X --- --- X --- ---"
+    ]
+    for win in wins:
+        print(win)
+
+# Uncomment to run
+# run_all_tests()
+# show_win_conditions()
