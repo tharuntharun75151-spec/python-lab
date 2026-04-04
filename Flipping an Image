@@ -1,0 +1,18 @@
+class Solution:
+    def flipAndInvertImage(self, image: List[List[int]]) -> List[List[int]]:
+      
+        n = len(image)
+        
+        for i in range(n):
+            # Step 1: Flip row horizontally (reverse)
+            left, right = 0, n - 1
+            while left < right:
+                image[i][left], image[i][right] = image[i][right], image[i][left]
+                left += 1
+                right -= 1
+            
+            # Step 2: Invert each element in row (0→1, 1→0)
+            for j in range(n):
+                image[i][j] = 1 - image[i][j]  # Magic: 1-0=1, 1-1=0
+        
+        return image
