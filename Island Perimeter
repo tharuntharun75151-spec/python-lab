@@ -1,0 +1,21 @@
+class Solution:
+    def islandPerimeter(self, grid: List[List[int]]) -> int:
+        rows = len(grid)
+        cols = len(grid[0])
+        perimeter = 0
+        
+        for i in range(rows):
+            for j in range(cols):
+                if grid[i][j] == 1:
+                    # Each land cell contributes 4 sides
+                    perimeter += 4
+                    
+                    # Check right neighbor
+                    if j + 1 < cols and grid[i][j + 1] == 1:
+                        perimeter -= 2
+                        
+                    # Check bottom neighbor
+                    if i + 1 < rows and grid[i + 1][j] == 1:
+                        perimeter -= 2
+        
+        return perimeter
