@@ -1,0 +1,60 @@
+class Solution:
+    def diagonalSum(self, mat: List[List[int]]) -> int:
+        print("="*60)
+        print("↘️↗️  MATRIX DIAGONAL SUMMER")
+        print("Primary + Secondary (center counted once)")
+        print("="*60)
+        
+        n = len(mat)
+        total_sum = 0
+        print(f"Square matrix: {n}×{n}")
+        print_matrix(mat)
+        
+        print("\n🔍 PRIMARY DIAGONAL (↘️ i==j):")
+        for i in range(n):
+            val = mat[i][i]
+            total_sum += val
+            print(f"  [{i}][{i}] = {val}")
+        
+        print("\n🔍 SECONDARY DIAGONAL (↗️ i+j==n-1):")
+        for i in range(n):
+            j = n - 1 - i
+            val = mat[i][j]
+            if i != j:  # Avoid double-counting center
+                total_sum += val
+                print(f"  [{i}][{j}] = {val}")
+            else:
+                print(f"  [{i}][{j}] = {val} (center - already counted)")
+        
+        print(f"\n💰 TOTAL DIAGONAL SUM: {total_sum}")
+        return total_sum
+
+def print_matrix(mat: List[List[int]]) -> None:
+    n = len(mat)
+    print("  ", end="")
+    for j in range(n):
+        print(f"{j:2d}", end=" ")
+    print()
+    
+    for i in range(n):
+        print(f"{i:2d}", end=" ")
+        for j in range(n):
+            print(f"{mat[i][j]:2d}", end=" ")
+        print()
+
+def run_tests():
+    sol = Solution()
+    
+    print("\nTEST 1: 3x3")
+    mat1 = [[1,2,3],[4,5,6],[7,8,9]]
+    print(sol.diagonalSum(mat1))
+    
+    print("\nTEST 2: 4x4 all 1s") 
+    mat2 = [[1,1,1,1],[1,1,1,1],[1,1,1,1],[1,1,1,1]]
+    print(sol.diagonalSum(mat2))
+    
+    print("\nTEST 3: 1x1")
+    mat3 = [[5]]
+    print(sol.diagonalSum(mat3))
+
+run_tests()
