@@ -1,0 +1,108 @@
+class Solution:
+    def matrixReshape(self, mat: List[List[int]], r: int, c: int) -> List[List[int]]:
+       
+        
+        # Step 1: Validate input and get dimensions
+        print("Step 1: Validating input...")
+        if not mat or not mat[0]:
+            print("Empty matrix detected. Returning original.")
+            return mat
+        
+        m = len(mat)           # Number of rows in original matrix
+        n = len(mat[0])        # Number of columns in original matrix
+        
+        print(f"Original matrix dimensions: {m} x {n}")
+        print(f"Target dimensions: {r} x {c}")
+        
+        # Step 2: Check if reshape operation is possible
+        print("\nStep 2: Checking reshape validity...")
+        original_elements = m * n
+        target_elements = r * c
+        
+        print(f"Original elements: {original_elements}")
+        print(f"Target elements: {target_elements}")
+        
+        if original_elements != target_elements:
+            print("❌ Reshape impossible! Element count mismatch.")
+            print("Returning original matrix...")
+            return mat
+        
+        print("✅ Reshape possible! Proceeding...")
+        
+        # Step 3: Validate all rows have same length
+        print("\nStep 3: Validating matrix structure...")
+        for i in range(m):
+            if len(mat[i]) != n:
+                print(f"❌ Row {i} has inconsistent length!")
+                return mat
+        print("✅ All rows have consistent length.")
+        
+        # Step 4: Flatten matrix into 1D list (row-major order)
+        print("\nStep 4: Flattening matrix...")
+        flat_list = []
+        
+        print("Original matrix:")
+        for i, row in enumerate(mat):
+            print(f"  Row {i}: {row}")
+            for element in row:
+                flat_list.append(element)
+        
+        print(f"Flattened list: {flat_list}")
+        print(f"Length of flat list: {len(flat_list)}")
+        
+        # Step 5: Create reshaped matrix
+        print("\nStep 5: Creating new matrix...")
+        result_matrix = []
+        
+        for i in range(r):
+            # Create new row
+            new_row = []
+            print(f"\nCreating row {i}:")
+            
+            for j in range(c):
+                # Calculate index in flat list: row_index * cols + col_index
+                flat_index = i * c + j
+                element = flat_list[flat_index]
+                new_row.append(element)
+                print(f"  Position [{i}][{j}] <- flat[{flat_index}] = {element}")
+            
+            result_matrix.append(new_row)
+            print(f"  New row {i}: {new_row}")
+        
+        print("\n✅ Reshape completed successfully!")
+        print("Final result matrix:")
+        for i, row in enumerate(result_matrix):
+            print(f"  Row {i}: {row}")
+        
+        return result_matrix
+
+# Test function for demonstration
+def test_reshape():
+    print("=== MATRIX RESHAPE TEST ===\n")
+    
+    # Test Case 1
+    print("TEST CASE 1:")
+    mat1 = [[1,2],[3,4]]
+    result1 = Solution().matrixReshape(mat1, 1, 4)
+    print(f"Result: {result1}\n")
+    
+    # Test Case 2  
+    print("TEST CASE 2:")
+    mat2 = [[1,2],[3,4]]
+    result2 = Solution().matrixReshape(mat2, 2, 4)
+    print(f"Result: {result2}\n")
+    
+    # Test Case 3
+    print("TEST CASE 3:")
+    mat3 = [[1,2,3],[4,5,6]]
+    result3 = Solution().matrixReshape(mat3, 3, 2)
+    print(f"Result: {result3}\n")
+    
+    # Test Case 4 - Invalid reshape
+    print("TEST CASE 4 (Invalid):")
+    mat4 = [[1,2],[3,4]]
+    result4 = Solution().matrixReshape(mat4, 3, 3)
+    print(f"Result: {result4}")
+
+# Uncomment to run tests
+# test_reshape()
