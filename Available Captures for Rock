@@ -1,0 +1,137 @@
+class Solution:
+    def numRookCaptures(self, board: List[List[str]]) -> int:
+      
+        print("="*80)
+        print("♜ ROOK ATTACK CALCULATOR (8x8 Chessboard)")
+        print("="*80)
+        
+        # Step 1: Find rook position
+        print("\n🔍 STEP 1: LOCATING ROOK...")
+        rook_row, rook_col = -1, -1
+        
+        for i in range(8):
+            for j in range(8):
+                if board[i][j] == 'R':
+                    rook_row, rook_col = i, j
+                    print(f"✅ ROOK FOUND at ({rook_row}, {rook_col})")
+                    break
+            if rook_row != -1:
+                break
+        
+        if rook_row == -1:
+            print("❌ ERROR: No rook found!")
+            return 0
+        
+        print(f"Rook position: row={rook_row}, col={rook_col}")
+        print_board(board, "Initial board")
+        
+        # Step 2: Check 4 directions from rook
+        directions = [
+            ("UP", -1, 0),    # row-1
+            ("RIGHT", 0, 1),  # col+1  
+            ("DOWN", 1, 0),   # row+1
+            ("LEFT", 0, -1)   # col-1
+        ]
+        
+        total_captures = 0
+        
+        print("\n🎯 STEP 2: CHECKING 4 DIRECTIONS...")
+        print("-" * 80)
+        
+        for direction_name, di, dj in directions:
+            print(f"\n{direction_name:>6} ({di:+d},{dj:+d}):")
+            captures_in_dir = 0
+            
+            # Move step by step in this direction
+            r, c = rook_row + di, rook_col + dj
+            
+            while 0 <= r < 8 and 0 <= c < 8:  # Within bounds
+                cell = board[r][c]
+                print(f"  Pos ({r},{c}): '{cell}'")
+                
+                if cell == 'p':
+                    print(f"  🎉 PAWN CAPTURED! +1")
+                    captures_in_dir += 1
+                    total_captures += 1
+                    break  # Rook captures pawn and stops
+                elif cell == 'B':
+                    print(f"  ⛔ BISHOP BLOCKS!")
+                    break  # Rook blocked by bishop
+                elif cell == '.':
+                    print(f"  · Empty - continue...")
+                    # Continue moving
+                else:
+                    print(f"  ❓ Unexpected: '{cell}'")
+                    break
+                
+                # Move to next position
+                r += di
+                c += dj
+            
+            print(f"  {direction_name} captures: {captures_in_dir}")
+        
+        print("\n" + "="*80)
+        print(f"🎊 FINAL RESULT: ROOK ATTACKS {total_captures} PAWNS!")
+        print("="*80)
+        return total_captures
+
+def print_board(board: List[List[str]], title: str = "") -> None:
+    """Pretty print 8x8 chessboard"""
+    if title:
+        print(f"\n{title}:")
+    print("  0 1 2 3 4 5 6 7")
+    print("  ------------")
+    for i in range(8):
+        row_str = f"{i}|"
+        for j in range(8):
+            row_str += f" {board[i][j]}"
+        print(row_str)
+    print()
+
+# =================================================================
+# COMPREHENSIVE TEST SUITE
+# =================================================================
+def run_all_tests():
+    sol = Solution()
+    
+    print("TEST CASE 1: Open board")
+    board1 = [
+        [".",".",".",".",".",".",".","."],
+        [".",".",".","p",".",".",".","."],
+        [".",".",".","R",".",".",".","p"],
+        [".",".",".",".",".",".",".","."],
+        [".",".",".",".",".",".",".","."],
+        [".",".",".","p",".",".",".","."],
+        [".",".",".",".",".",".",".","."],
+        [".",".",".",".",".",".",".","."]
+    ]
+    print(f"Result: {sol.numRookCaptures(board1)}")  # Expected: 3
+    
+    print("\nTEST CASE 2: Blocked by bishops")
+    board2 = [
+        [".",".",".",".",".",".","."],
+        [".","p","p","p","p","p",".","."],
+        [".","p","p","B","p","p",".","."],
+        [".","p","B","R","B","p",".","."],
+        [".","p","p","B","p","p",".","."],
+        [".","p","p","p","p","p",".","."],
+        [".",".",".",".",".",".",".","."],
+        [".",".",".",".",".",".",".","."]
+    ]
+    print(f"Result: {sol.numRookCaptures(board2)}")  # Expected: 0
+    
+    print("\nTEST CASE 3: Mixed scenario")
+    board3 = [
+        [".",".",".",".",".",".",".","."],
+        [".",".",".","p",".",".",".","."],
+        [".",".",".","p",".",".",".","."],
+        ["p","p",".","R",".","p","B","."],
+        [".",".",".",".",".",".",".","."],
+        [".",".",".","B",".",".",".","."],
+        [".",".",".","p",".",".",".","."],
+        [".",".",".",".",".",".",".","."]
+    ]
+    print(f"Result: {sol.numRookCaptures(board3)}")  # Expected: 3
+
+# Uncomment to run
+# run_all_tests()
